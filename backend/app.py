@@ -1,16 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS;
 from elasticsearch import Elasticsearch
-# from filter_resumes import filter_resumes
+from filter_resumes import FilterResumes
+
 
 app = Flask(__name__)
 CORS(app)
-
-es = Elasticsearch(
-    ['https://localhost:9200'],
-    http_auth=('elastic', 'C3t8n2uDYd=K_kIT9TJw'),
-    verify_certs=False
-)
+filter_resumes = FilterResumes()
 
 @app.route('/', methods=['GET'])
 def index():
@@ -18,12 +14,17 @@ def index():
 
 @app.route('/es-test')
 def es_test():
-    if es.ping():
+    if filter_resumes.es.ping():
         # return jsonify({"status: Elasticsearch is connected"})
         return "status: elastic search is connected"
     else:
         # return jsonify({"status: elasticsearch is not connected"})
         return "status: elasticsearch is not connected"
+    
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    return "upload"
 
 if __name__ == '__main__':
     app.run(debug=True)
