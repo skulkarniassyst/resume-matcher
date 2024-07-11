@@ -1,66 +1,28 @@
-// import React from 'react'
-// import { useState, useEffect } from 'react'
-// import axios from 'axios'
-// import './App.css'
-
-// const App: React.FC = () => {
-//   const [message, setMessage] = useState<string>('');
-//   const [message1, setMessage1] = useState<string>('');
-
-
-//   useEffect(() => {
-//     axios.get('http://127.0.0.1:5000/')
-//       .then(response => {
-//         setMessage(response.data);
-//       })
-//       .catch(error => {
-//         console.error('There was an error', error);
-//       });
-//   }, []);
-
-//   useEffect(() => {
-//     axios.get('http://127.0.0.1:5000/es-test')
-//       .then(response => {
-//         setMessage1(response.data);
-//       })
-//       .catch(error => {
-//         console.error('There was an error', error);
-//       });
-//   }, []);
-
-//   return (
-//     <div className="App">
-//       <h1>Resume Matcher</h1>
-//       <p>{message}</p>
-//       <p>{message1}</p>
-//     </div>
-//   )
-// }
-
-// export default App
-
-
 import React, { useState } from "react";
 import "./App.css";
 import axios from "axios";
 
 const App: React.FC = () => {
   const [resumes, setResumes] = useState<FileList | null>(null);
-  const [jobDescription, setJobDescription] = useState<File | null>(null);
+  const [jobDescription, setJobDescription] = useState<string>('');
+  const [topX, setTopX] = useState<number | null>(3);
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setResumes(e.target.files);
   };
 
-  const handleJobDescriptionChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setJobDescription(e.target.files ? e.target.files[0] : null);
+  const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setJobDescription(e.target.value);
   };
 
+  const handleTopXChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTopX(Number(e.target.value));
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
+    
     e.preventDefault();
-    if (!resumes || !jobDescription) {
+    if (!resumes || jobDescription.trim() === "") {
       alert("Please upload both resumes and job description.");
       return;
     }
@@ -97,10 +59,25 @@ const App: React.FC = () => {
         </div>
         <div>
           <label>Upload Job Description:</label>
-          <input type="file" onChange={handleJobDescriptionChange} />
+          <input 
+            type="text"
+            value={jobDescription}
+            onChange={handleJobDescriptionChange}
+            />
+        </div>
+        <div>
+          <label>Number of Candidates: </label>
+          <input
+            type="number"
+            placeholder="Enter"
+            value={topX ?? ''}
+            min="0"
+            onChange={handleTopXChange}
+          />
         </div>
         <button type="submit">Submit</button>
       </form>
+      
     </div>
   );
 };
