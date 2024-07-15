@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Install axios HTTP client for axios
+# Install axios HTTP client for node.js
 RUN npm install axios
 
 # Copy the rest of the application code
