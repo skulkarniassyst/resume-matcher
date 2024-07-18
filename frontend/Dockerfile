@@ -10,7 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Install HTTP client for node.js
+
+# Install axios HTTP client for node.js
 RUN npm install axios
 
 # Copy the rest of the application code
@@ -34,3 +35,4 @@ EXPOSE 80
 
 # Start Nginx when the container launches
 CMD ["nginx", "-g", "daemon off;"]
+
