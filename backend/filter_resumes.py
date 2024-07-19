@@ -1,6 +1,5 @@
 from sentence_transformers import SentenceTransformer
 from elasticsearch import Elasticsearch
-from pdfminer.high_level import extract_text
 import spacy
 
 
