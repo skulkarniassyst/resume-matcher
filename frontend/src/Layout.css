@@ -94,8 +94,13 @@ html, body, #root {
     flex-grow: 1; /* Allow results to grow to fill box */
     display: flex;
     flex-direction: column;
+    white-space: pre-wrap; /* Ensures text is wrapped */
+    word-wrap: break-word; /* Breaks long words to fit the container */
+    overflow-wrap: break-word; /* For compatibility with different browsers */
+    width: 100%; /* Ensure it takes full width of the box */
+    height: 100%; /* Ensure it takes full height of the box */
+    
   }
-
 
 
 

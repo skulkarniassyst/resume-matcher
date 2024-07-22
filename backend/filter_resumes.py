@@ -15,8 +15,7 @@ class FilterResumes:
 
 
     def parse_resumes(self, pdf_file_path):
-        text = extract_text(pdf_file_path)
-        return text
+        pass
 
     def extract_entities(self, text):
         doc = self.nlp(text)

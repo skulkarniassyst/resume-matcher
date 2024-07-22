@@ -29,20 +29,17 @@ def upload():
     if 'resumes' not in request.files or 'jobDescription' not in request.form:
         return jsonify({'error': 'No file or job description provided'}), 400
     
-    resumes = request.files.getlist('resumes')
+    resume = request.files['resumes']
     job_description = request.form['jobDescription']
     
-    parsed_resumes = []
-    for resume in resumes:
-        pdf_document = fitz.open(stream=resume.read(), filetype="pdf")
-        text = ""
-        for page_num in range(len(pdf_document)):
-            page = pdf_document.load_page(page_num)
-            text += page.get_text()
-        parsed_resumes.append({'text': text})
+    pdf_document = fitz.open(stream=resume.read(), filetype="pdf")
+    text = ""
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        text += page.get_text()
     
     return jsonify({
-        'resumes': parsed_resumes,
+        'resume': text,
         'jd': job_description
     })
 
