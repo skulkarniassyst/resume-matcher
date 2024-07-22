@@ -5,7 +5,6 @@ import axios from "axios";
 const Layout: React.FC = () => {
   const [resumes, setResumes] = useState<FileList | null>(null);
   const [jobDescription, setJobDescription] = useState<string>('');
-  const [results, setResults] = useState<any>(null);
   const [comparisonResult, setComparisonResult] = useState<any>(null);
 
 
@@ -26,34 +25,59 @@ const Layout: React.FC = () => {
       return;
     }
 
+
     const formData = new FormData();
-    for (let i = 0; i < resumes.length; i++) {
-        formData.append("resumes", resumes[i]);
-    }
+    formData.append("resumes", resumes[0]); // Handle only one resume for now
     formData.append('jobDescription', jobDescription);
-
-
-
-
+  
     try {
-        const response = await axios.post(
-          "http://localhost:5000/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        setResults(response.data);
-        console.log(response.data);
+        // First API call to upload the resume and job description
+        const response = await axios.post("http://localhost:5000/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        const resumeText: string = response.data.resume;
+        const jobDescriptionText: string = response.data.jd;
+  
+
+        console.log("Resume Text:", resumeText);
+        console.log("Job Description Text:", jobDescriptionText);
+
+        // Second API call to the comparison endpoint
+        const comparisonResponse = await axios.post("https://10.10.10.29:8000/compare_resume_with_jd/", {
+          resume: resumeText,
+          jd: jobDescriptionText,
+        });
+  
+        setComparisonResult(comparisonResponse.data);
       } catch (error) {
         console.error("Error:", error);
       }
 
+
+    // try {
+    //     const response = await axios.post(
+    //       "http://localhost:5000/upload",
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     );
+    //     setResults(response.data);
+    //     console.log(response.data);
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //   }
+
   };
 
 
+
+  
   return (
     <>
       <div className="header">
@@ -74,15 +98,17 @@ const Layout: React.FC = () => {
         <div className="box">
           <h2>Results</h2>
           <div className="results">
-            {results && <pre>{JSON.stringify(results, null, 2)}</pre>}
+            {comparisonResult && <pre>{JSON.stringify(comparisonResult, null, 2)}</pre>}
           </div>
         </div>
       </div>
       <div className="submit-button-container">
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
       </div>
+      
     </>
   );
+
 };
 
 export default Layout;
