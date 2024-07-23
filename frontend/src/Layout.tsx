@@ -69,7 +69,7 @@ const Layout: React.FC = () => {
   return (
     <>
       <div className="header">
-        Assyst Resume Scanner
+        ASSYST Resume Scanner
       </div>
       <div className="container">
         <div className="box">
