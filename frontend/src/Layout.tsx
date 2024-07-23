@@ -1,6 +1,8 @@
 import React, { useState }  from 'react';
 import './Layout.css';
 import axios from "axios";
+import ResultsDisplay from './ResultsDisplay';
+
 
 const Layout: React.FC = () => {
   const [resumes, setResumes] = useState<FileList | null>(null);
@@ -34,7 +36,7 @@ const Layout: React.FC = () => {
         // First API call to upload the resume and job description
         const response = await axios.post("http://localhost:5000/upload", formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data; charset=utf-8",
           },
         });
   
@@ -50,29 +52,15 @@ const Layout: React.FC = () => {
           resume: resumeText,
           jd: jobDescriptionText,
         });
+
+
   
         setComparisonResult(comparisonResponse.data);
+
+        console.log("result:", comparisonResponse.data);
       } catch (error) {
         console.error("Error:", error);
       }
-
-
-    // try {
-    //     const response = await axios.post(
-    //       "http://localhost:5000/upload",
-    //       formData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     );
-    //     setResults(response.data);
-    //     console.log(response.data);
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   }
-
   };
 
 
@@ -86,20 +74,21 @@ const Layout: React.FC = () => {
       <div className="container">
         <div className="box">
           <h2>Upload Resume</h2>
-          <input type="file" multiple onChange={handleResumeChange} />
+          <input name="upload-resume" type="file" multiple onChange={handleResumeChange} />
         </div>
         <div className="box">
           <h2>Job Description</h2>
           <textarea 
+            name="job-description"
             placeholder="Type the job description here..." 
             value={jobDescription} 
             onChange={handleJobDescriptionChange}></textarea>
         </div>
         <div className="box">
           <h2>Results</h2>
-          <div className="results">
-            {comparisonResult && <pre>{JSON.stringify(comparisonResult, null, 2)}</pre>}
-          </div>
+          {/* <div className="results"> */}
+          {comparisonResult && <ResultsDisplay text={comparisonResult} />}          
+          {/* </div> */}
         </div>
       </div>
       <div className="submit-button-container">

@@ -1,0 +1,11 @@
+.results-display {
+    white-space: pre-wrap; /* Ensures text is wrapped */
+    overflow-y: auto; /* Adds a vertical scrollbar if needed */
+    width: 100%; /* Ensure it takes full width of the box */
+    height: 100%; /* Ensure it takes full height of the box */
+    padding: 10px; /* Optional: Add some padding for better readability */
+    box-sizing: border-box; /* Ensures padding is included in the width and height */
+    word-break: break-word; /* Break long words to prevent overflow */
+  }
+
+  
