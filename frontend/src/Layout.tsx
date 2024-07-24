@@ -2,13 +2,13 @@ import React, { useState }  from 'react';
 import './Layout.css';
 import axios from "axios";
 import ResultsDisplay from './ResultsDisplay';
-
+import LoadingSpinner from './LoadingSpinner';
 
 const Layout: React.FC = () => {
   const [resumes, setResumes] = useState<FileList | null>(null);
   const [jobDescription, setJobDescription] = useState<string>('');
-  const [comparisonResult, setComparisonResult] = useState<any>(null);
-
+  const [comparisonResult, setComparisonResult] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -27,6 +27,7 @@ const Layout: React.FC = () => {
       return;
     }
 
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("resumes", resumes[0]); // Handle only one resume for now
@@ -60,12 +61,11 @@ const Layout: React.FC = () => {
         console.log("result:", comparisonResponse.data);
       } catch (error) {
         console.error("Error:", error);
+      }finally {
+        setLoading(false); // Set loading to false after the API call completes
       }
   };
 
-
-
-  
   return (
     <>
       <div className="header">
@@ -86,9 +86,9 @@ const Layout: React.FC = () => {
         </div>
         <div className="box">
           <h2>Results</h2>
-          {/* <div className="results"> */}
-          {comparisonResult && <ResultsDisplay text={comparisonResult} />}          
-          {/* </div> */}
+            {loading && <LoadingSpinner />}
+            {!loading && comparisonResult && <ResultsDisplay text={comparisonResult} />}
+            {!loading && !comparisonResult && <p className="placeholder">Results will display here</p>}         
         </div>
       </div>
       <div className="submit-button-container">
