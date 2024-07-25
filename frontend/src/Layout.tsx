@@ -73,7 +73,7 @@ const Layout: React.FC = () => {
       </div>
       <div className="container">
         <div className="box">
-          <h2>Upload Resume</h2>
+          <h2>Resume Upload</h2>
           <input name="upload-resume" type="file" multiple onChange={handleResumeChange} />
         </div>
         <div className="box">
