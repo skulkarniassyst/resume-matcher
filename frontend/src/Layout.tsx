@@ -9,6 +9,7 @@ const Layout: React.FC = () => {
   const [jobDescription, setJobDescription] = useState<string>('');
   const [comparisonResult, setComparisonResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [initialMessage, setInitialMessage] = useState<string>("Results will display here");
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -53,14 +54,13 @@ const Layout: React.FC = () => {
           resume: resumeText,
           jd: jobDescriptionText,
         });
-
-
   
         setComparisonResult(comparisonResponse.data);
 
         console.log("result:", comparisonResponse.data);
       } catch (error) {
         console.error("Error:", error);
+        setInitialMessage("Failed to retrieve comparison results. Please try again.");
       }finally {
         setLoading(false); // Set loading to false after the API call completes
       }
@@ -88,13 +88,12 @@ const Layout: React.FC = () => {
           <h2>Results</h2>
             {loading && <LoadingSpinner />}
             {!loading && comparisonResult && <ResultsDisplay text={comparisonResult} />}
-            {!loading && !comparisonResult && <p className="placeholder">Results will display here</p>}         
+            {!loading && !comparisonResult && <p className="placeholder">{initialMessage}</p>}         
         </div>
       </div>
       <div className="submit-button-container">
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
       </div>
-      
     </>
   );
 

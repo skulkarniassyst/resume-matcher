@@ -89,15 +89,15 @@ html, body, #root {
  }
 
 .placeholder {
-  color: #888; /* Light grey color for placeholder text */
-  font-style: italic; /* Italic style for placeholder text */
-  text-align: center; /* Center the text */
-  margin-top: auto; /* Center the text vertically */
-  margin-bottom: auto; /* Center the text vertically */
+  color: #888; 
+  font-style: italic; 
+  text-align: center; 
+  margin-top: auto; 
+  margin-bottom: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Full height of the results box */
+  height: 100%; 
 }
 
 
