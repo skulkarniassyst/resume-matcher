@@ -1,19 +1,33 @@
-import React, { useState }  from 'react';
+import React, { useState, useRef }  from 'react';
 import './Layout.css';
 import axios from "axios";
 import ResultsDisplay from './ResultsDisplay';
 import LoadingSpinner from './LoadingSpinner';
+import UploadedResumes from './UploadedResumes'; 
+
 
 const Layout: React.FC = () => {
-  const [resumes, setResumes] = useState<FileList | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+  const [resumes, setResumes] = useState<File[]>([]);
   const [jobDescription, setJobDescription] = useState<string>('');
   const [comparisonResult, setComparisonResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [initialMessage, setInitialMessage] = useState<string>("Results will display here");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-        setResumes(e.target.files);
+      setSelectedFiles(e.target.files);
+    }
+  };
+
+  const handleAddFiles = () => {
+    if (selectedFiles) {
+      setResumes((prevResumes) => [...prevResumes, ...Array.from(selectedFiles)]);
+      setSelectedFiles(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''; 
+      }
     }
   };
 
@@ -23,7 +37,7 @@ const Layout: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resumes || jobDescription.trim() === "") {
+    if (resumes.length === 0 || jobDescription.trim() === "") {
       alert("Please upload both resumes and job description.");
       return;
     }
@@ -66,6 +80,16 @@ const Layout: React.FC = () => {
       }
   };
 
+  const handleClearResumes = () => {
+    setResumes([]);
+  };
+
+  const handleRemoveResume = (index: number) => {
+    const updatedResumes = resumes.filter((_, i) => i !== index);
+    setResumes(updatedResumes);
+  };
+  
+
   return (
     <>
       <div className="header">
@@ -73,8 +97,14 @@ const Layout: React.FC = () => {
       </div>
       <div className="container">
         <div className="box">
-          <h2>Resume Upload</h2>
-          <input name="upload-resume" type="file" multiple onChange={handleResumeChange} />
+          <h2>Upload Resume</h2>
+          <input name="upload-resume" type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
+          <button onClick={handleAddFiles}>Add File(s)</button>
+          <button onClick={handleClearResumes}>Clear Resumes</button>
+          <UploadedResumes 
+            resumes={resumes} 
+            handleRemoveResume={handleRemoveResume} 
+          />
         </div>
         <div className="box">
           <h2>Job Description</h2>
