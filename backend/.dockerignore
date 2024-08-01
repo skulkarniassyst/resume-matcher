@@ -1,0 +1,19 @@
+# Ignore the virtual environment directory
+venv
+
+# Ignore Python cache files
+__pycache__
+*.pyc
+*.pyo
+
+# Ignore the .git directory
+.git
+.gitignore
+
+# Ignore Dockerfile and .dockerignore (optional)
+Dockerfile
+.dockerignore
+
+# Ignore other temporary or unnecessary files
+*.log
+*.tmp
