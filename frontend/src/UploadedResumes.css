@@ -1,0 +1,29 @@
+.uploaded-resumes {
+    overflow-y: auto; /* Add vertical scroll bar */
+    max-height: 200px; /* Adjust as needed */
+  }
+  
+  .uploaded-resumes ul {
+    list-style-type: disc; /* Add bullet points */
+    padding-left: 20px; /* Indent the list */
+  }
+  
+  .uploaded-resumes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Space between list items */
+  }
+  
+  .uploaded-resumes button {
+    background-color: #dc3545; /* Red background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+  }
+  
+  .uploaded-resumes button:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }

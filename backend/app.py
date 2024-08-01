@@ -3,7 +3,7 @@ from flask_cors import CORS
 from elasticsearch import Elasticsearch
 # from filter_resumes import FilterResumes
 import fitz
-import json
+# import json
 
 
 app = Flask(__name__)
@@ -42,6 +42,8 @@ def upload():
         'resume': text,
         'jd': job_description
     })
+
+# @app.route('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
