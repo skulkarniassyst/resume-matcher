@@ -3,10 +3,13 @@ import './Layout.css';
 import axios from "axios";
 import ResultsDisplay from './ResultsDisplay';
 import LoadingSpinner from './LoadingSpinner';
-import UploadedResumes from './UploadedResumes'; 
+import UploadedResumes from './UploadedResumes';
 
+interface LayoutProps {
+  setResumeText: (text: string) => void;
+}
 
-const Layout: React.FC = () => {
+const Layout: React.FC<LayoutProps> = ({ setResumeText }) => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [resumes, setResumes] = useState<File[]>([]);
   const [jobDescription, setJobDescription] = useState<string>('');
@@ -58,9 +61,11 @@ const Layout: React.FC = () => {
   
         const resumeText: string = response.data.resume;
         const jobDescriptionText: string = response.data.jd;
-  
 
-        console.log("Resume Text:", resumeText);
+        // Pass the resume text to the parent App component
+        setResumeText(resumeText);
+
+        // console.log("Resume Text:", resumeText);
         console.log("Job Description Text:", jobDescriptionText);
 
         // Second API call to the comparison endpoint
@@ -88,7 +93,6 @@ const Layout: React.FC = () => {
     const updatedResumes = resumes.filter((_, i) => i !== index);
     setResumes(updatedResumes);
   };
-  
 
   return (
     <>
